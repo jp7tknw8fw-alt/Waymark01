@@ -1,0 +1,16 @@
+-- Run this once against your Postgres database before starting the server:
+--   psql "$DATABASE_URL" -f schema.sql
+
+CREATE TABLE IF NOT EXISTS memberships (
+  wallet          TEXT PRIMARY KEY,
+  active          BOOLEAN NOT NULL DEFAULT false,
+  started_at      BIGINT,              -- epoch ms, server clock only
+  last_paid_at    BIGINT,              -- epoch ms
+  loyalty_granted JSONB NOT NULL DEFAULT '[]'::jsonb
+);
+
+CREATE TABLE IF NOT EXISTS used_signatures (
+  signature   TEXT PRIMARY KEY,
+  wallet      TEXT NOT NULL,
+  used_at     BIGINT NOT NULL
+);
